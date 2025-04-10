@@ -1,0 +1,80 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #5C2D91; /* violet metamask */
+    color: #333;
+  }
+  
+.voting-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", sans-serif;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .account {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #666;
+  }
+  
+  .resolution-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+  }
+  
+  .resolution-text {
+    font-size: 16px;
+    color: #444;
+  }
+  
+  .vote-buttons,
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .vote-buttons button,
+  .nav-buttons button {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .vote-buttons button:hover,
+  .nav-buttons button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .vote-buttons button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .results-box {
+    background-color: #e8f4ea;
+    border: 1px solid #b6d9c2;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
