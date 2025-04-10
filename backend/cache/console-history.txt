@@ -1,0 +1,2 @@
+const Election = await ethers.getContractFactory("Election");
+console.log(resolution);
