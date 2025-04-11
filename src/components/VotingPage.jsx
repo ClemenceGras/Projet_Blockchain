@@ -47,7 +47,7 @@ const VotingPage = () => {
         await checkVoteStatus(electionContract, resolutionId); // Vérifie si le vote est ouvert
 
         // Check if the user is whitelisted
-        const whitelisted = await electionContract.isWhitelisted(userAccount);
+        const whitelisted = await electionContract.whitelist(userAccount); // Call the whitelist mapping
         setIsWhitelisted(whitelisted);
         
       } catch (error) {
@@ -244,7 +244,7 @@ const VotingPage = () => {
             </button>
             <button onClick={nextResolution} disabled={resolutionId >= totalResolutions}>➡️ Résolution suivante</button>
             {resolutionId === totalResolutions && (
-              <button onClick={finishVoting}>🏁 Finir les votes</button>
+              <button onClick={finishVoting}>🏁 Résultats finaux</button>
             )}
           </div>
 
