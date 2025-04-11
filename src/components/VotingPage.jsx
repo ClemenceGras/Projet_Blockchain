@@ -149,7 +149,7 @@ const VotingPage = () => {
         <>
           <h2 className="emoji">🗳️</h2>
           <h1 className="title">Vote Électronique en Assemblée Générale</h1>
-          <p className="account">Connecté en tant que : <strong>{account}</strong></p>
+          <p className="account">ID Utilisateur : <strong>{account}</strong></p>
   
           <div className="resolution-box">
             <h2 className="titleResolution">Résolution {resolutionId}</h2>
