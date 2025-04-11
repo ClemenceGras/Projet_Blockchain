@@ -11,6 +11,9 @@ const VotingPage = () => {
   const [loading, setLoading] = useState(false);
   const [showingResults, setShowingResults] = useState(false);
   const [votingFinished, setVotingFinished] = useState(false); 
+  const [whitelist, setWhitelist] = useState([]);
+  const [newAddress, setNewAddress] = useState("");
+
   const totalResolutions = 12;
 
   useEffect(() => {
@@ -41,7 +44,6 @@ const VotingPage = () => {
     } catch (err) {
       console.error("Erreur chargement résolution :", err);
       setCurrentResolution("Aucune résolution trouvée.");
-      console.log("Tentative d'affichage de résolution", resolutionId);
     }
   };
 
@@ -53,8 +55,6 @@ const VotingPage = () => {
       alert("Vote enregistré !");
     } catch (error) {
       console.error("Erreur lors du vote :", error);
-  
-      // Vérifiez si l'erreur contient le message "Vous avez deja vote."
       if (error?.error?.message?.includes("Vous avez deja vote.")) {
         alert("Vous avez déjà voté pour cette résolution.");
       } else {
@@ -77,7 +77,7 @@ const VotingPage = () => {
         alert("Impossible d'afficher les résultats.");
       }
     }
-    setShowingResults(!showingResults); // Change l'état pour afficher ou cacher les résultats
+    setShowingResults(!showingResults);
   };
 
   const nextResolution = () => {
@@ -105,18 +105,27 @@ const VotingPage = () => {
           });
         }
       }
-      setResults(allResults); // Stocke tous les résultats
-      setVotingFinished(true); // Indique que le vote est terminé
+      setResults(allResults);
+      setVotingFinished(true);
     } catch (error) {
       console.error("Erreur lors de la récupération des résultats de toutes les résolutions :", error);
       alert("Impossible d'afficher les résultats globaux.");
     }
   };
 
+  const handleAddToWhitelist = async () => {
+    if (!newAddress) return;
+    try {
+      await contract.addToWhitelist([newAddress]);
+      setNewAddress(""); // Clear input field after adding
+    } catch (error) {
+      console.error("Erreur lors de l'ajout à la whitelist", error);
+    }
+  };
+
   return (
     <div className="voting-container">
       {votingFinished ? (
-        // Affichage des résultats globaux
         <div className="all-results-box">
           <h3>Résultats globaux :</h3>
           {results && Array.isArray(results) && results.map((result, index) => (
@@ -129,23 +138,22 @@ const VotingPage = () => {
           ))}
         </div>
       ) : (
-        // Affichage normal des résolutions et des boutons de vote
         <>
           <h2 className="emoji">🗳️</h2>
           <h1 className="title">Vote Électronique en Assemblée Générale</h1>
           <p className="account">Connecté en tant que : <strong>{account}</strong></p>
-  
+
           <div className="resolution-box">
             <h2 className="titleResolution">Résolution {resolutionId}</h2>
             <p className="resolution-text">{currentResolution}</p>
           </div>
-  
+
           <div className="vote-buttons">
             <button onClick={() => vote(0)} disabled={loading}>✅ Pour</button>
             <button onClick={() => vote(1)} disabled={loading}>❌ Contre</button>
             <button onClick={() => vote(2)} disabled={loading}>➖ Neutre</button>
           </div>
-  
+
           {showingResults && results && (
             <div className="results-box">
               <h3>Résultats :</h3>
@@ -154,24 +162,36 @@ const VotingPage = () => {
               <p>➖ Neutre : {results.neutralVotes.toString()}</p>
             </div>
           )}
-  
+
           <div className="progress-bar-container">
             <div className="progress-bar" style={{ width: `${(resolutionId / totalResolutions) * 100}%` }} />
           </div>
           <p className="progress-text">Résolution {resolutionId} sur {totalResolutions}</p>
-  
+
           <div className="nav-buttons">
             <button onClick={toggleResults}>
               {showingResults ? "🔒 Cacher les résultats" : "📊 Afficher les résultats"}
             </button>
             <button onClick={nextResolution} disabled={resolutionId >= totalResolutions}>➡️ Résolution suivante</button>
-  
+
             {resolutionId === totalResolutions && (
               <button onClick={finishVoting}>🏁 Finir les votes</button>
             )}
           </div>
         </>
       )}
+
+      {/* Whitelist Section */}
+      <div className="whitelist-section">
+        <h3>Whitelist</h3>
+        <input
+          type="text"
+          value={newAddress}
+          onChange={(e) => setNewAddress(e.target.value)}
+          placeholder="Ajouter une adresse"
+        />
+        <button onClick={handleAddToWhitelist}>Ajouter</button>
+      </div>
     </div>
   );
 };
