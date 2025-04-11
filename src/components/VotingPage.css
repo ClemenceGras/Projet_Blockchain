@@ -4,11 +4,15 @@ body, html {
     font-family: sans-serif;
     background-color: #222222; /* violet metamask */
     color: #333;
-  }
+    height: 100%; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    }
 
 .voting-container {
     max-width: 600px;
-    margin: 40px auto;
+    margin: 40px 24px;
     padding: 30px;
     background-color: #f9f9f9;
     border-radius: 12px;

@@ -10,6 +10,9 @@ const VotingPage = () => {
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const MIN_RESOLUTION = 1;
+  const MAX_RESOLUTION = 12;
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -69,8 +72,17 @@ const VotingPage = () => {
   };
 
   const nextResolution = () => {
-    setResults(null);
-    setResolutionId((prev) => prev + 1);
+    if (resolutionId < MAX_RESOLUTION) {
+      setResults(null);
+      setResolutionId((prev) => prev + 1);
+    }
+  };
+
+  const prevResolution = () => {
+    if (resolutionId > MIN_RESOLUTION) {
+      setResults(null);
+      setResolutionId((prev) => prev - 1);
+    }
   };
 
   return (
@@ -100,7 +112,8 @@ const VotingPage = () => {
 
       <div className="nav-buttons">
         <button onClick={showResults}>📊 Afficher les résultats</button>
-        <button onClick={nextResolution}>➡️ Résolution suivante</button>
+        <button onClick={prevResolution} disabled={resolutionId === MIN_RESOLUTION}>⬅️ Résolution précédente</button>
+        <button onClick={nextResolution} disabled={resolutionId === MAX_RESOLUTION}>➡️ Résolution suivante</button>
       </div>
     </div>
   );
