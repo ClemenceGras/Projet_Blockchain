@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 // L'adresse du contrat déployé
-const contractAddress = "0xf5969AB3f35E435655b77dcf01f32d01Bd5897C3";
+const contractAddress = "0xaA5AEA457088339bec237ed55Dfb57EA3e5A2185";
 
 // ABI du contrat généré par hardhat (framework pour le développement Ethereum)
 const abi = [

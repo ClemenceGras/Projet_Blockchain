@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.24;
 
@@ -9,20 +10,33 @@ contract Election is Ownable, Whitelist {
     using SafeMath for uint256;
 
     //* Variables *//
-    address public president;
-    address public scrutateur;
+    address public president = 0xEe868457836Bc3F2C05f7aD7f254d807Ea4Ea575;
+    address public scrutateur = 0xD0C57A0F556cAeeE4daa2f3b4364e6D671885AdF;
+    address public secretaire = 0x93577D30eE25166f5433BB1fDd4Bf86D8FEAA194;
+
     uint public resolutionsCount;
     mapping(uint => mapping(address => bool)) private hasVoted;
     mapping(uint => string) private resolutions;
     mapping(uint => uint) private resolutionVoteCountsPour;   // Compteur des votes "Pour"
     mapping(uint => uint) private resolutionVoteCountsContre; // Compteur des votes "Contre"
     mapping(uint => uint) private resolutionVoteCountsNeutre; // Compteur des votes "Neutre"
+    mapping(uint => bool) private voteEnabled;
 
     enum Vote { Pour, Contre, Neutre }
 
     modifier onlyWhitelisted() {
         require(isWhitelisted(msg.sender), "Vous n'etes pas autorise a voter.");
         _;
+    }
+
+    // Constructeur
+    constructor() {
+        // Ajouter le président, le scrutateur et le secrétaire à la whitelist
+        address[] memory beneficiaries = new address[](3);
+        beneficiaries[0] = president;
+        beneficiaries[1] = scrutateur;
+        beneficiaries[2] = secretaire;
+        addToWhitelist(beneficiaries);
     }
 
     // Initialiser les resolutions
@@ -51,6 +65,21 @@ contract Election is Ownable, Whitelist {
     // Obtenir la description d'une résolution
     function AfficherResolution(uint _resolutionId) public view returns (string memory) {
         return resolutions[_resolutionId];
+    }
+
+    // Vérifier si le vote est ouvert pour une résolution donnée
+    function estVoteOuvert(uint _resolutionId) public view returns (bool) {
+        return voteEnabled[_resolutionId];
+    }
+
+        // Ouvrir le vote pour une résolution
+    function ouvrirVote(uint _resolutionId) public onlyOwner {
+        voteEnabled[_resolutionId] = true;
+    }
+
+    // Fermer le vote pour une résolution
+    function fermerVote(uint _resolutionId) public onlyOwner {
+        voteEnabled[_resolutionId] = false;
     }
 
     // Obtenir les résultats de la résolution

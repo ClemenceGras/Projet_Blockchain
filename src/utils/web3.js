@@ -3,7 +3,7 @@ import Web3Modal from "web3modal";
 import ElectionContract from "../components/Election.json";
 
 // ✅ Adresse du contrat déployé sur Sepolia (à ajuster si besoin)
-const contractAddress = "0xf5969AB3f35E435655b77dcf01f32d01Bd5897C3";
+const contractAddress = "0xaA5AEA457088339bec237ed55Dfb57EA3e5A2185";
 
 const getWeb3 = async () => {
   const web3Modal = new Web3Modal();

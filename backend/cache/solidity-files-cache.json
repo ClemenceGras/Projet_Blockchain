@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/manuela/election_blockchain/vote-electronique/backend/contracts/Election.sol": {
-      "lastModificationDate": 1744362722827,
-      "contentHash": "bd09e27d9e05b7b7ed1ab169debfacf9",
+      "lastModificationDate": 1744379452777,
+      "contentHash": "cb1c28e6b7a9e3c19cd833dc073ffd94",
       "sourceName": "contracts/Election.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -114,8 +114,8 @@
       ]
     },
     "/home/manuela/election_blockchain/vote-electronique/backend/contracts/Whitelist.sol": {
-      "lastModificationDate": 1744294016977,
-      "contentHash": "c0761ca23bea0a03ffe0370643176f18",
+      "lastModificationDate": 1744379526217,
+      "contentHash": "abf424f5db04447a2426771cb07f2587",
       "sourceName": "contracts/Whitelist.sol",
       "solcConfig": {
         "version": "0.8.28",

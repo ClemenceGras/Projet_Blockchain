@@ -151,3 +151,25 @@ body, html {
     background-color: #45a049;
   }
   
+  .scrutateur-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .scrutateur-controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #9b94c9; /* une teinte violette type MetaMask */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .scrutateur-controls button:hover {
+    background-color: #5343aa; /* un violet un peu plus clair au hover */
+  }
+  

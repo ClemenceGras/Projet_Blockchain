@@ -11,11 +11,12 @@ contract Whitelist is Ownable {
         return whitelist[_beneficiary];
     }
 
-    function addToWhitelist(address[] calldata _beneficiaries) public onlyOwner {
-        for (uint256 i = 0; i < _beneficiaries.length; i++) {
-            whitelist[_beneficiaries[i]] = true;
-        }
+    function addToWhitelist(address[] memory _beneficiaries) public onlyOwner {
+    for (uint256 i = 0; i < _beneficiaries.length; i++) {
+        whitelist[_beneficiaries[i]] = true;
+        emit AddedBeneficiary(_beneficiaries[i]); // Emit event for each added beneficiary
     }
+}
 
     function removeFromWhitelist(address _beneficiary) public onlyOwner {
         whitelist[_beneficiary] = false;

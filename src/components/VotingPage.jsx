@@ -10,11 +10,14 @@ const VotingPage = () => {
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showingResults, setShowingResults] = useState(false);
-  const [votingFinished, setVotingFinished] = useState(false); 
+  const [votingFinished, setVotingFinished] = useState(false);
   const [whitelist, setWhitelist] = useState([]);
   const [newAddress, setNewAddress] = useState("");
+  const [voteOuvert, setVoteOuvert] = useState(false); // État pour savoir si le vote est ouvert
   const [totalResolutions, setTotalResolutions] = useState(12);
-  const scrutateurAddress = "0xD0C57A0F556cAeeE4daa2f3b4364e6D671885AdF";
+  const [scrutateurAddress, setScrutateurAddress] = useState("");
+  const [secretaireAddress, setSecretaireAddress] = useState("");
+  const [isWhitelisted, setIsWhitelisted] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -25,14 +28,31 @@ const VotingPage = () => {
         const userAccount = await signer.getAddress();
         setAccount(userAccount);
 
+        // 🔥 Récupération des rôles
+        const president = await electionContract.president();
+        const scrutateur = await electionContract.scrutateur();
+        const secretaire = await electionContract.secretaire();
+        setScrutateurAddress(scrutateur);
+        setSecretaireAddress(secretaire);
+
+        console.log("👑 Président :", president);
+        console.log("🧾 Scrutateur :", scrutateur);
+        console.log("📑 Secrétaire :", secretaire);
+
         // Récupère le nombre total de résolutions depuis le contrat
         const resolutionsCount = await electionContract.resolutionsCount();
         setTotalResolutions(resolutionsCount.toNumber());
 
         await loadResolution(electionContract, resolutionId);
+        await checkVoteStatus(electionContract, resolutionId); // Vérifie si le vote est ouvert
+
+        // Check if the user is whitelisted
+        const whitelisted = await electionContract.isWhitelisted(userAccount);
+        setIsWhitelisted(whitelisted);
+        
       } catch (error) {
         console.error("Erreur lors de l'initialisation :", error);
-        alert("Impossible de charger la résolution. Vérifiez la connexion ou le contrat.");
+        // alert("Impossible de charger la résolution. Vérifiez la connexion ou le contrat.");
       }
     };
 
@@ -52,8 +72,20 @@ const VotingPage = () => {
     }
   };
 
+  const checkVoteStatus = async (electionContract, id) => {
+    try {
+      const isOpen = await electionContract.estVoteOuvert(id);
+      setVoteOuvert(isOpen);
+    } catch (error) {
+      console.error("Erreur lors de la vérification de l'état du vote :", error);
+    }
+  };
+
   const vote = async (voteType) => {
-    if (!contract) return;
+    if (!contract || !isWhitelisted) {
+      alert("Vous ne pouvez pas voter. Veuillez contacter le secrétaire.");
+      return;
+    }
     setLoading(true);
     try {
       await contract.VoterResolution(resolutionId, voteType);
@@ -62,6 +94,8 @@ const VotingPage = () => {
       console.error("Erreur lors du vote :", error);
       if (error?.error?.message?.includes("Vous avez deja vote.")) {
         alert("Vous avez déjà voté pour cette résolution.");
+      } else if (error?.error?.message?.includes("Le vote pour cette resolution n'est pas ouvert.")) {
+        alert("Le vote pour cette résolution n'est pas ouvert.");
       } else {
         alert("Erreur pendant le vote. Veuillez réessayer.");
       }
@@ -70,12 +104,35 @@ const VotingPage = () => {
     }
   };
 
+  const ouvrirVote = async () => {
+    try {
+      await contract.ouvrirVote(resolutionId);
+      alert(`Le vote pour la résolution ${resolutionId} est maintenant ouvert.`);
+      setVoteOuvert(true);
+    } catch (error) {
+      console.error("Erreur lors de l'ouverture du vote :", error);
+      alert("Impossible d'ouvrir le vote.");
+    }
+  };
+
+  const fermerVote = async () => {
+    try {
+      await contract.fermerVote(resolutionId);
+      alert(`Le vote pour la résolution ${resolutionId} est maintenant fermé.`);
+      setVoteOuvert(false);
+    } catch (error) {
+      console.error("Erreur lors de la fermeture du vote :", error);
+      alert("Impossible de fermer le vote.");
+    }
+  };
+
   const toggleResults = async () => {
     if (!showingResults) {
       try {
         const result = await contract.ResultatResolution(resolutionId);
         if (result) {
-          setResults(result);
+          const [forVotes, againstVotes, neutralVotes] = result; // Destructure the result
+          setResults({ forVotes, againstVotes, neutralVotes }); // Set results as an object
         }
       } catch (error) {
         console.error("Erreur lors de l'affichage des résultats :", error);
@@ -86,7 +143,7 @@ const VotingPage = () => {
   };
 
   const nextResolution = () => {
-    if (resolutionId < 12) {
+    if (resolutionId < totalResolutions) {
       setResults(null);
       setResolutionId((prev) => prev + 1);
     } else {
@@ -118,8 +175,6 @@ const VotingPage = () => {
     }
   };
 
-  const isScrutateur = account === scrutateurAddress;
-
   const handleAddToWhitelist = async () => {
     if (!newAddress) return;
     try {
@@ -129,6 +184,8 @@ const VotingPage = () => {
       console.error("Erreur lors de l'ajout à la whitelist", error);
     }
   };
+
+  const isScrutateur = account === scrutateurAddress;
 
   return (
     <div className="voting-container">
@@ -156,10 +213,16 @@ const VotingPage = () => {
           </div>
 
           <div className="vote-buttons">
-            <button onClick={() => vote(0)} disabled={loading}>✅ Pour</button>
-            <button onClick={() => vote(1)} disabled={loading}>❌ Contre</button>
-            <button onClick={() => vote(2)} disabled={loading}>➖ Neutre</button>
+            <button onClick={() => vote(0)} disabled={loading || !voteOuvert}>✅ Pour</button>
+            <button onClick={() => vote(1)} disabled={loading || !voteOuvert}>❌ Contre</button>
+            <button onClick={() => vote(2)} disabled={loading || !voteOuvert}>➖ Neutre</button>
           </div>
+
+          {!isWhitelisted && (
+            <div className="whitelist-message">
+              <p>Vous ne pouvez pas voter. Veuillez contacter le secrétaire pour être ajouté à la whitelist.</p>
+            </div>
+          )}
 
           {showingResults && results && (
             <div className="results-box">
@@ -176,17 +239,24 @@ const VotingPage = () => {
           <p className="progress-text">Résolution {resolutionId} sur {totalResolutions}</p>
 
           <div className="nav-buttons">
-            <button onClick={toggleResults} disabled={!isScrutateur}>
+            <button onClick={toggleResults}>
               {showingResults ? "🔒 Cacher les résultats" : "📊 Afficher les résultats"}
             </button>
-            <button onClick={nextResolution} disabled={resolutionId >= totalResolutions || !isScrutateur}>➡️ Résolution suivante</button>
+            <button onClick={nextResolution} disabled={resolutionId >= totalResolutions}>➡️ Résolution suivante</button>
             {resolutionId === totalResolutions && (
-              <button onClick={finishVoting} disabled={!isScrutateur}>🏁 Finir les votes</button>
+              <button onClick={finishVoting}>🏁 Finir les votes</button>
             )}
           </div>
 
-          <hr className="separator-line" />
           {isScrutateur && (
+            <div className="scrutateur-controls">
+              <button onClick={ouvrirVote}>Ouvrir le vote</button>
+              <button onClick={fermerVote}>Fermer le vote</button>
+            </div>
+          )}
+
+          <hr className="separator-line" />
+          {account === secretaireAddress && (
             <div className="whitelist-section">
               <h3>Whitelist</h3>
               <input
@@ -203,6 +273,5 @@ const VotingPage = () => {
     </div>
   );
 };
-
 
 export default VotingPage;
