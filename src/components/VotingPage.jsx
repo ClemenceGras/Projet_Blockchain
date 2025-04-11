@@ -53,7 +53,13 @@ const VotingPage = () => {
       alert("Vote enregistré !");
     } catch (error) {
       console.error("Erreur lors du vote :", error);
-      alert("Erreur pendant le vote.");
+  
+      // Vérifiez si l'erreur contient le message "Vous avez deja vote."
+      if (error?.error?.message?.includes("Vous avez deja vote.")) {
+        alert("Vous avez déjà voté pour cette résolution.");
+      } else {
+        alert("Erreur pendant le vote. Veuillez réessayer.");
+      }
     } finally {
       setLoading(false);
     }
@@ -87,11 +93,12 @@ const VotingPage = () => {
 
   return (
     <div className="voting-container">
+      <h2 className="emoji">🗳️</h2>
       <h1 className="title">Vote Électronique en Assemblée Générale</h1>
       <p className="account">Connecté en tant que : <strong>{account}</strong></p>
 
       <div className="resolution-box">
-        <h2>Résolution {resolutionId}</h2>
+        <h2 className="titleResolution">Résolution {resolutionId}</h2>
         <p className="resolution-text">{currentResolution}</p>
       </div>
 
