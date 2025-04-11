@@ -10,7 +10,7 @@ Sur la racine du projet, lancez la commande suivante dans votre terminal afin de
 
 Ouvrez [http://localhost:3000](http://localhost:3000) afin de voir le projet dans votre navigateur.
 
-#### Règles de l'Assemblée Générale (AG)
+## Règles de l'Assemblée Générale (AG)
 
 Il y a trois rôles : le président, le scrutateur et le secrétaire.
 
