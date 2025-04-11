@@ -255,9 +255,9 @@ const VotingPage = () => {
             </div>
           )}
 
-          <hr className="separator-line" />
           {account === secretaireAddress && (
             <div className="whitelist-section">
+              <hr className="separator-line" />
               <h3>Whitelist</h3>
               <input
                 type="text"
