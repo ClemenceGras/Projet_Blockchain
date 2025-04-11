@@ -11,9 +11,6 @@ const VotingPage = () => {
   const [loading, setLoading] = useState(false);
   const [showingResults, setShowingResults] = useState(false);
 
-  const MIN_RESOLUTION = 1;
-  const MAX_RESOLUTION = 12;
-
   useEffect(() => {
     const init = async () => {
       try {
@@ -82,18 +79,14 @@ const VotingPage = () => {
   };
 
   const nextResolution = () => {
-    if (resolutionId < MAX_RESOLUTION) {
+    if (resolutionId < 12) {
       setResults(null);
       setResolutionId((prev) => prev + 1);
+    } else {
+      alert("Vous avez atteint la dernière résolution.");
     }
   };
-
-  const prevResolution = () => {
-    if (resolutionId > MIN_RESOLUTION) {
-      setResults(null);
-      setResolutionId((prev) => prev - 1);
-    }
-  };
+  
 
   return (
     <div className="voting-container">
@@ -121,12 +114,17 @@ const VotingPage = () => {
         </div>
       )}
 
+<div className="progress-bar-container">
+  <div className="progress-bar" style={{ width: `${(resolutionId / 12) * 100}%` }} />
+</div>
+<p className="progress-text">Résolution {resolutionId} sur 12</p>
+
+
       <div className="nav-buttons">
         <button onClick={toggleResults}>
           {showingResults ? "🔒 Cacher les résultats" : "📊 Afficher les résultats"}
         </button>
-        <button onClick={prevResolution} disabled={resolutionId === MIN_RESOLUTION}>⬅️ Résolution précédente</button>
-        <button onClick={nextResolution} disabled={resolutionId === MAX_RESOLUTION}>➡️ Résolution suivante</button>
+        <button onClick={nextResolution} disabled={resolutionId >= 12}>➡️ Résolution suivante</button>
       </div>
     </div>
   );
