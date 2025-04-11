@@ -10,6 +10,8 @@ const VotingPage = () => {
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showingResults, setShowingResults] = useState(false);
+  const [votingFinished, setVotingFinished] = useState(false); 
+  const totalResolutions = 12;
 
   useEffect(() => {
     const init = async () => {
@@ -86,46 +88,90 @@ const VotingPage = () => {
       alert("Vous avez atteint la dernière résolution.");
     }
   };
-  
+
+  const finishVoting = async () => {
+    try {
+      const allResults = [];
+      for (let i = 1; i <= totalResolutions; i++) {
+        const result = await contract.ResultatResolution(i);
+        console.log(`Résultats pour la résolution ${i}:`, result);
+        if (result) {
+          allResults.push(result);
+        } else {
+          allResults.push({
+            forVotes: 0,
+            againstVotes: 0,
+            neutralVotes: 0,
+          });
+        }
+      }
+      setResults(allResults); // Stocke tous les résultats
+      setVotingFinished(true); // Indique que le vote est terminé
+    } catch (error) {
+      console.error("Erreur lors de la récupération des résultats de toutes les résolutions :", error);
+      alert("Impossible d'afficher les résultats globaux.");
+    }
+  };
 
   return (
     <div className="voting-container">
-      <h2 className="emoji">🗳️</h2>
-      <h1 className="title">Vote Électronique en Assemblée Générale</h1>
-      <p className="account">Connecté en tant que : <strong>{account}</strong></p>
-
-      <div className="resolution-box">
-        <h2 className="titleResolution">Résolution {resolutionId}</h2>
-        <p className="resolution-text">{currentResolution}</p>
-      </div>
-
-      <div className="vote-buttons">
-        <button onClick={() => vote(0)} disabled={loading}>✅ Pour</button>
-        <button onClick={() => vote(1)} disabled={loading}>❌ Contre</button>
-        <button onClick={() => vote(2)} disabled={loading}>➖ Neutre</button>
-      </div>
-
-      {showingResults && results && (
-        <div className="results-box">
-          <h3>Résultats :</h3>
-          <p>✅ Pour : {results.forVotes.toString()}</p>
-          <p>❌ Contre : {results.againstVotes.toString()}</p>
-          <p>➖ Neutre : {results.neutralVotes.toString()}</p>
+      {votingFinished ? (
+        // Affichage des résultats globaux
+        <div className="all-results-box">
+          <h3>Résultats globaux :</h3>
+          {results && Array.isArray(results) && results.map((result, index) => (
+            <div key={index} className="results-box">
+              <h4>Résolution {index + 1}</h4>
+              <p>✅ Pour : {result.forVotes.toString()}</p>
+              <p>❌ Contre : {result.againstVotes.toString()}</p>
+              <p>➖ Neutre : {result.neutralVotes.toString()}</p>
+            </div>
+          ))}
         </div>
+      ) : (
+        // Affichage normal des résolutions et des boutons de vote
+        <>
+          <h2 className="emoji">🗳️</h2>
+          <h1 className="title">Vote Électronique en Assemblée Générale</h1>
+          <p className="account">Connecté en tant que : <strong>{account}</strong></p>
+  
+          <div className="resolution-box">
+            <h2 className="titleResolution">Résolution {resolutionId}</h2>
+            <p className="resolution-text">{currentResolution}</p>
+          </div>
+  
+          <div className="vote-buttons">
+            <button onClick={() => vote(0)} disabled={loading}>✅ Pour</button>
+            <button onClick={() => vote(1)} disabled={loading}>❌ Contre</button>
+            <button onClick={() => vote(2)} disabled={loading}>➖ Neutre</button>
+          </div>
+  
+          {showingResults && results && (
+            <div className="results-box">
+              <h3>Résultats :</h3>
+              <p>✅ Pour : {results.forVotes.toString()}</p>
+              <p>❌ Contre : {results.againstVotes.toString()}</p>
+              <p>➖ Neutre : {results.neutralVotes.toString()}</p>
+            </div>
+          )}
+  
+          <div className="progress-bar-container">
+            <div className="progress-bar" style={{ width: `${(resolutionId / totalResolutions) * 100}%` }} />
+          </div>
+          <p className="progress-text">Résolution {resolutionId} sur {totalResolutions}</p>
+  
+          <div className="nav-buttons">
+            <button onClick={toggleResults}>
+              {showingResults ? "🔒 Cacher les résultats" : "📊 Afficher les résultats"}
+            </button>
+            <button onClick={nextResolution} disabled={resolutionId >= totalResolutions}>➡️ Résolution suivante</button>
+  
+            {resolutionId === totalResolutions && (
+              <button onClick={finishVoting}>🏁 Finir les votes</button>
+            )}
+          </div>
+        </>
       )}
-
-<div className="progress-bar-container">
-  <div className="progress-bar" style={{ width: `${(resolutionId / 12) * 100}%` }} />
-</div>
-<p className="progress-text">Résolution {resolutionId} sur 12</p>
-
-
-      <div className="nav-buttons">
-        <button onClick={toggleResults}>
-          {showingResults ? "🔒 Cacher les résultats" : "📊 Afficher les résultats"}
-        </button>
-        <button onClick={nextResolution} disabled={resolutionId >= 12}>➡️ Résolution suivante</button>
-      </div>
     </div>
   );
 };
