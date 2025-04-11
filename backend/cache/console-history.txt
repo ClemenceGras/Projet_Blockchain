@@ -1,2 +1,61 @@
+console.log("Résolution :", resolution);
+const resolution = await election.AfficherResolution(1); 
+console.log("Nombre de résolutions :", count.toString());
+const count = await election.resolutionsCount();
+const election = await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const Election = await ethers.getContractFactory("Election");
+const counte = await election.resolutionsCount();
+const count = await election.resolutionsCount();
+const election = await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const Election = await ethers.getContractFactory("Election");
+.exit
+const Election = await ethers.getContractFactory("Election");
+await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const Election = await ethers.getContractFactory("Election");
+.exit
+const isWhitelisted = await election.isWhitelisted("0xf9d39Ce919fa005E27E1cCcc44800eC0B448Eb32");
+const resolutionCount = await election.resolutionsCount();
+await election.InitialiserResolution();
+console.log("Nombre de résolutions :", resolutionCount.toString());
+const resolutionCount = await election.resolutionsCount();
+console.log("Nombre de résolutions :", count.toString());
+const count = await election.resolutionsCount();
+const election = await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const Election = await ethers.getContractFactory("Election");
+.exit
+const count = await election.resolutionsCount();
+const election = await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const contract =  await connectToContract();
+console.log("Nombre de résolutions :", count.toString());
+const count = await election.resolutionsCount();
+await election.InitialiserResolution();
+await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const Election = await ethers.getContractFactory("Election");
+const count = await election.resolutionsCount();
+const isWhitelisted = await election.isWhitelisted("ADRESSE_METAMASK");
+await election.addToWhitelist(["0xf9d39Ce919fa005E27E1cCcc44800eC0B448Eb32"]);
+const election = await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const Election = await ethers.getContractFactory("Election");
+await election.addToWhitelist(["0xf9d39Ce919fa005E27E1cCcc44800eC0B448Eb32"]);
+console.log("Résultats pour la résolution 1 : Pour =", result[0].toString(), ", Contre =", result[1].toString(), ", Neutre =", result[2].toString());
+const result = await election.ResultatResolution(1);
+console.log("Résultats pour la résolution 1 : Pour =", result[0].toString(), ", Contre =", result[1].toString(), ", Neutre =", result[2].toString());
+> const result = await election.ResultatResolution(1);
+undefined
+Première résolution : Voulez-vous elire Clemence comme presidente de la seance, car rien ne peut commencer sans une figure d'autorite symbolique.
+> console.log("Première résolution :", resolution);
+console.log("Première résolution :", resolution);
+const resolution = await election.AfficherResolution(1);
+const election = await ElectionFactory.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const ElectionFactory = await ethers.getContractFactory("Election");
+const Election = await ethers.getContractFactory("Election");
+.exit
+const Election = await ethers.getContractFactory("Election");
+npx hardhat run scripts/deploy.js --network localhost
+> const election = await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const election = await Election.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const Election = await ethers.getContractFactory("Election");
+console.log("Première résolution :", resolution);
+const resolution = await election.AfficherResolution(1); // Remplacez 1 par l'ID de la résolution
 const Election = await ethers.getContractFactory("Election");
 console.log(resolution);

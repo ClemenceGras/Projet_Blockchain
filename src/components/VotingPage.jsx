@@ -38,6 +38,7 @@ const VotingPage = () => {
     } catch (err) {
       console.error("Erreur chargement résolution :", err);
       setCurrentResolution("Aucune résolution trouvée.");
+      console.log("Tentative d'affichage de résolution", resolutionId);
     }
   };
 

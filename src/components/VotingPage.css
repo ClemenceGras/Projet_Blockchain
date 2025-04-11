@@ -1,11 +1,11 @@
 body, html {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #5C2D91; /* violet metamask */
+    font-family: sans-serif;
+    background-color: #222222; /* violet metamask */
     color: #333;
   }
-  
+
 .voting-container {
     max-width: 600px;
     margin: 40px auto;
@@ -30,9 +30,9 @@ body, html {
   
   .resolution-box {
     background-color: #fff;
-    padding: 20px;
+    padding: 8px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     border: 1px solid #ddd;
   }
   

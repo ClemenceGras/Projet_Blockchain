@@ -65,18 +65,18 @@ contract Election is Ownable, Whitelist {
     }
 
     // Fonction pour attribuer les rôles après vérification des votes
-    function AssignerRoleApresVote() private { 
-        if (president == address(0) && resolutionVoteCountsPour[1] > resolutionVoteCountsContre[1] && resolutionVoteCountsPour[1] > resolutionVoteCountsNeutre[1]) {   
-            president = address(0xEe868457836Bc3F2C05f7aD7f254d807Ea4Ea575);
-            string memory message = "Le role de president a ete attribue a l'adresse specifiee apres validation du vote.";
-            emit NewPresidentElected(president, message); // Émettre l'événement avec le message
-        }
-        if (scrutateur == address(0) && resolutionVoteCountsPour[2] > resolutionVoteCountsContre[2] && resolutionVoteCountsPour[2] > resolutionVoteCountsNeutre[2]) {
-            scrutateur = address(0xEe868457836Bc3F2C05f7aD7f254d807Ea4Ea575);
-            string memory message = "Le role de scrutateur a ete attribue a l'adresse specifiee apres validation du vote.";
-            emit NewScrutateurElected(scrutateur, message); // Émettre l'événement avec le message
-        }
+function AssignerRoleApresVote() private { 
+    if (president == address(0) && resolutionVoteCountsPour[1] > resolutionVoteCountsContre[1] && resolutionVoteCountsPour[1] > resolutionVoteCountsNeutre[1]) {   
+        president = address(0xEe868457836Bc3F2C05f7aD7f254d807Ea4Ea575);
+        string memory message = "Le role de president a ete attribue a l'adresse specifiee apres validation du vote.";
+        emit NewPresidentElectedWithMessage(president, message); // Utilisez la version avec deux arguments
     }
+    if (scrutateur == address(0) && resolutionVoteCountsPour[2] > resolutionVoteCountsContre[2] && resolutionVoteCountsPour[2] > resolutionVoteCountsNeutre[2]) {
+        scrutateur = address(0xEe868457836Bc3F2C05f7aD7f254d807Ea4Ea575);
+        string memory message = "Le role de scrutateur a ete attribue a l'adresse specifiee apres validation du vote.";
+        emit NewScrutateurElectedWithMessage(scrutateur, message); // Utilisez la version avec deux arguments
+    }
+}
 
 
     function VoterResolution(uint _resolutionId, Vote _vote) public {
@@ -139,12 +139,12 @@ contract Election is Ownable, Whitelist {
         }
     }
 
-    // Événements pour suivre les actions
-    event VotedForResolution(uint indexed _resolutionId, Vote indexed _vote);
-    event NewPresidentElected(address indexed _newPresident);
-    event NewScrutateurElected(address indexed _newScrutateur);
-    event ResolutionAdded(uint indexed _resolutionId, string _description);
-    event VoteCloture(uint resolutionId, uint pour, uint contre, uint neutre, string resultMessage);
-    event NewPresidentElected(address president, string message);
-    event NewScrutateurElected(address scrutateur, string message);
+// Événements pour suivre les actions
+event VotedForResolution(uint indexed _resolutionId, Vote indexed _vote);
+event NewPresidentElected(address indexed _newPresident); // Version avec un seul argument
+event NewPresidentElectedWithMessage(address president, string message); // Version avec deux arguments
+event NewScrutateurElected(address indexed _newScrutateur); // Version avec un seul argument
+event NewScrutateurElectedWithMessage(address scrutateur, string message); // Version avec deux arguments
+event ResolutionAdded(uint indexed _resolutionId, string _description);
+event VoteCloture(uint resolutionId, uint pour, uint contre, uint neutre, string resultMessage);
 }

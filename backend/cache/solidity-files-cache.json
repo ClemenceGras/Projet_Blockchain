@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/manuela/election_blockchain/vote-electronique/backend/contracts/Election.sol": {
-      "lastModificationDate": 1744293940887,
-      "contentHash": "ccf3d9176ea3bbd0611689cb1f54a5c5",
+      "lastModificationDate": 1744362722827,
+      "contentHash": "bd09e27d9e05b7b7ed1ab169debfacf9",
       "sourceName": "contracts/Election.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -41,42 +41,6 @@
         "Election"
       ]
     },
-    "/home/manuela/election_blockchain/vote-electronique/backend/contracts/SafeMath.sol": {
-      "lastModificationDate": 1744294013977,
-      "contentHash": "2addb0814126268f4a58b3698d2ad7b8",
-      "sourceName": "contracts/SafeMath.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.24"
-      ],
-      "artifacts": [
-        "SafeMath"
-      ]
-    },
     "/home/manuela/election_blockchain/vote-electronique/backend/contracts/Ownable.sol": {
       "lastModificationDate": 1744294004797,
       "contentHash": "b9479eb20cb7b687d648a871e2d0dbff",
@@ -111,6 +75,42 @@
       ],
       "artifacts": [
         "Ownable"
+      ]
+    },
+    "/home/manuela/election_blockchain/vote-electronique/backend/contracts/SafeMath.sol": {
+      "lastModificationDate": 1744294013977,
+      "contentHash": "2addb0814126268f4a58b3698d2ad7b8",
+      "sourceName": "contracts/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "SafeMath"
       ]
     },
     "/home/manuela/election_blockchain/vote-electronique/backend/contracts/Whitelist.sol": {
