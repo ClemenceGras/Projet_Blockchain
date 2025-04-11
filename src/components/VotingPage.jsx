@@ -9,6 +9,7 @@ const VotingPage = () => {
   const [results, setResults] = useState(null);
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showingResults, setShowingResults] = useState(false);
 
   const MIN_RESOLUTION = 1;
   const MAX_RESOLUTION = 12;
@@ -59,16 +60,19 @@ const VotingPage = () => {
     }
   };
 
-  const showResults = async () => {
-    try {
-      const result = await contract.ResultatResolution(resolutionId);
-      if (result) {
-        setResults(result);
+  const toggleResults = async () => {
+    if (!showingResults) {
+      try {
+        const result = await contract.ResultatResolution(resolutionId);
+        if (result) {
+          setResults(result);
+        }
+      } catch (error) {
+        console.error("Erreur lors de l'affichage des résultats :", error);
+        alert("Impossible d'afficher les résultats.");
       }
-    } catch (error) {
-      console.error("Erreur lors de l'affichage des résultats :", error);
-      alert("Impossible d'afficher les résultats.");
     }
+    setShowingResults(!showingResults); // Change l'état pour afficher ou cacher les résultats
   };
 
   const nextResolution = () => {
@@ -101,7 +105,7 @@ const VotingPage = () => {
         <button onClick={() => vote(2)} disabled={loading}>➖ Neutre</button>
       </div>
 
-      {results && (
+      {showingResults && results && (
         <div className="results-box">
           <h3>Résultats :</h3>
           <p>✅ Pour : {results.forVotes.toString()}</p>
@@ -111,7 +115,9 @@ const VotingPage = () => {
       )}
 
       <div className="nav-buttons">
-        <button onClick={showResults}>📊 Afficher les résultats</button>
+        <button onClick={toggleResults}>
+          {showingResults ? "🔒 Cacher les résultats" : "📊 Afficher les résultats"}
+        </button>
         <button onClick={prevResolution} disabled={resolutionId === MIN_RESOLUTION}>⬅️ Résolution précédente</button>
         <button onClick={nextResolution} disabled={resolutionId === MAX_RESOLUTION}>➡️ Résolution suivante</button>
       </div>

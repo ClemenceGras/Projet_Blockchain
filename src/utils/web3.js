@@ -20,6 +20,7 @@ const getWeb3 = async () => {
   }
 
   const signer = provider.getSigner();
+  console.log(signer);
   return { provider, signer };
 };
 
