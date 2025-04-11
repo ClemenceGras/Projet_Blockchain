@@ -13,7 +13,6 @@ const VotingPage = () => {
   const [votingFinished, setVotingFinished] = useState(false); 
   const [whitelist, setWhitelist] = useState([]);
   const [newAddress, setNewAddress] = useState("");
-
   const [totalResolutions, setTotalResolutions] = useState(12);
   const scrutateurAddress = "0xD0C57A0F556cAeeE4daa2f3b4364e6D671885AdF";
 
@@ -150,7 +149,7 @@ const VotingPage = () => {
           <h2 className="emoji">🗳️</h2>
           <h1 className="title">Vote Électronique en Assemblée Générale</h1>
           <p className="account">ID Utilisateur : <strong>{account}</strong></p>
-  
+
           <div className="resolution-box">
             <h2 className="titleResolution">Résolution {resolutionId}</h2>
             <p className="resolution-text">{currentResolution}</p>
@@ -187,20 +186,23 @@ const VotingPage = () => {
           </div>
 
           <hr className="separator-line" />
-          <div className="whitelist-section">
-            <h3>Whitelist</h3>
-            <input
-              type="text"
-              value={newAddress}
-              onChange={(e) => setNewAddress(e.target.value)}
-              placeholder="Ajouter une adresse"
-            />
-            <button onClick={handleAddToWhitelist}>Ajouter</button>
-          </div>
+          {isScrutateur && (
+            <div className="whitelist-section">
+              <h3>Whitelist</h3>
+              <input
+                type="text"
+                value={newAddress}
+                onChange={(e) => setNewAddress(e.target.value)}
+                placeholder="Ajouter une adresse"
+              />
+              <button onClick={handleAddToWhitelist}>Ajouter</button>
+            </div>
+          )}
         </>
       )}
     </div>
   );
 };
+
 
 export default VotingPage;
